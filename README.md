@@ -1,3 +1,10 @@
+**Deprecation notice:**
+This module is being deprecated because its core functionality can be achieved with Foundry’s built-in settings.
+
+What to do instead:
+	•	GM: Go to Settings → Core → Configure Permissions and enable “Make Manual Rolls”.
+	•	Players: Go to Settings → Core → Dice Configuration and set their dice preferences (faces, visuals, etc.).
+
 # Manual Physical Dice – Dice Tray Button
 
 ## What it does
