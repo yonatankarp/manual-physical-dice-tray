@@ -1,0 +1,46 @@
+name: Release Module
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+  workflow_dispatch:
+
+jobs:
+  build-and-publish:
+    name: Build & Publish Zip
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install prerequisites
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y jq zip
+
+      - name: Read module version
+        id: get_version
+        run: |
+          VERSION=$(jq -r '.version' module.json)
+          echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
+
+      - name: Build zip artifact
+        run: |
+          ZIPNAME="manual-physical-dice-tray-v${{ steps.get_version.outputs.version }}.zip"
+          rm -f "$ZIPNAME"
+          zip -r "$ZIPNAME" module.json scripts styles README.md
+          ls -lh "$ZIPNAME"
+
+      - name: Create or update GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: manual-physical-dice-tray
+          files: manual-physical-dice-tray-v${{ steps.get_version.outputs.version }}.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Confirm release asset
+        run: |
+          echo "Published release for version ${{ steps.get_version.outputs.version }}"
