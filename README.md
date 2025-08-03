@@ -1,4 +1,4 @@
-**Deprecation notice:**
+# ⚠️ Deprecation Notice
 This module is being deprecated because its core functionality can be achieved with Foundry’s built-in settings.
 
 What to do instead:
